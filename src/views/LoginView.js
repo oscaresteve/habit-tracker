@@ -14,7 +14,7 @@ export function LoginView({ onNavigate }) {
   `;
 
   // Estado local del formulario
-  const formState = { email: "", password: "" };
+  const formState = { emailValue: "", passwordValue: "" };
 
   const registerBtn = section.querySelector("#register-btn");
   const loginForm = section.querySelector("#login-form");
@@ -25,11 +25,11 @@ export function LoginView({ onNavigate }) {
 
   // Actualizar estado local al cambiar inputs
   emailInput.addEventListener("input", (e) => {
-    formState.email = e.target.value;
+    formState.emailValue = e.target.value;
   });
 
   passwordInput.addEventListener("input", (e) => {
-    formState.password = e.target.value;
+    formState.passwordValue = e.target.value;
   });
 
   loginForm.addEventListener("submit", async (e) => {
