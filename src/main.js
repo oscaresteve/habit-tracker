@@ -1,7 +1,7 @@
 import { router } from "./router/router";
 import { route$ } from "./state/store";
-import { renderLoginView } from "./views/loginView";
-import { renderRegisterView } from "./views/registerView";
+import { LoginView } from "./views/LoginView";
+import { RegisterView } from "./views/RegisterView";
 
 router.init();
 
@@ -11,14 +11,19 @@ const root = document.querySelector("#app");
 route$.subscribe((route) => {
   root.innerHTML = "";
 
+  let view;
+
   switch (route) {
     case "login":
-      renderLoginView(root);
+      view = LoginView({ onNavigate: router.navigate });
       break;
     case "register":
-      renderRegisterView(root);
+      view = RegisterView({ onNavigate: router.navigate });
       break;
     default:
-      root.innerHTML = "<h1>404</h1>";
+      view = document.createElement("h1");
+      view.textContent = "404";
   }
+
+  root.appendChild(view);
 });
