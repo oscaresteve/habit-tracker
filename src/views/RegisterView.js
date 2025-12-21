@@ -6,8 +6,8 @@ export function RegisterView({ onNavigate }) {
       <form id="login-form">
         <input id="email-input" type="email" name="email" placeholder="Email" />
 
-        <input id="password-input" type="password" password="password" placeholder="Password"/>
-        <input id="password-input-confirm" type="password" password="password" placeholder="Confirm Password"/>
+        <input id="password-input" type="password" name="password" placeholder="Password"/>
+        <input id="password-input-confirm" type="password" name="password" placeholder="Confirm Password"/>
 
         <input type="submit" value="Log In" />
       </form>

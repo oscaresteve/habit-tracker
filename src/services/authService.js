@@ -1,6 +1,11 @@
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+import { fetchSupabase } from "./supabaseService";
 
-export function login() {}
+export async function login({ email, password }) {
+  await fetchSupabase({
+    endpoint: "/auth/v1/token?grant_type=password",
+    method: "POST",
+    body: { email, password },  
+  });
+}
 
 export function register() {}

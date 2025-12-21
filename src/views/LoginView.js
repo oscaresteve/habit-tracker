@@ -1,3 +1,5 @@
+import { login } from "../services/authService";
+
 export function LoginView({ onNavigate }) {
   const section = document.createElement("section");
 
@@ -6,7 +8,7 @@ export function LoginView({ onNavigate }) {
       <form id="login-form">
         <input id="email-input" type="email" name="email" placeholder="Email" />
 
-        <input id="password-input" type="password" password="password" />
+        <input id="password-input" type="password" name="password" />
 
         <input type="submit" value="Log In" />
       </form>
@@ -34,9 +36,10 @@ export function LoginView({ onNavigate }) {
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    try {
-      console.log(formState);
-    } catch (error) {}
+
+    console.log(formState);
+
+    await login({ email: formState.emailValue, password: formState.passwordValue });
   });
   return section;
 }
