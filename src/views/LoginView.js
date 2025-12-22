@@ -37,9 +37,13 @@ export function LoginView({ onNavigate }) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    console.log(formState);
+    console.log("formState -> ", formState);
 
-    await login({ email: formState.emailValue, password: formState.passwordValue });
+    const result = await login({
+      email: formState.emailValue,
+      password: formState.passwordValue,
+    });
+    console.log("Resultado de Login -> ", result);
   });
   return section;
 }

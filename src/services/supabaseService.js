@@ -42,11 +42,12 @@ export async function fetchSupabase({
 
     console.log("data -> ", data);
 
+    //Se devuelve una respuesta generica, esta funcion no debe saber sobre los datos
     if (!response.ok) {
       return Err(data);
     }
     return Ok(data);
   } catch (error) {
-    console.error("Fetch error:", error);
+    return Err(error)
   }
 }

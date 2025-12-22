@@ -17,7 +17,11 @@ export function SignupView({ onNavigate }) {
   `;
 
   // Estado local del formulario
-  const formState = { emailValue: "", passwordValue: "", passwordConfirmValue: "" };
+  const formState = {
+    emailValue: "",
+    passwordValue: "",
+    passwordConfirmValue: "",
+  };
 
   const loginBtn = section.querySelector("#login-btn");
   const signupForm = section.querySelector("#signup-form");
@@ -42,8 +46,15 @@ export function SignupView({ onNavigate }) {
 
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log(formState);
-    await signup({ email: formState.emailValue, password: formState.passwordValue })
+
+    console.log("formState -> ", formState);
+
+    const result = await signup({
+      email: formState.emailValue,
+      password: formState.passwordValue,
+    });
+
+    console.log("Resultado de Register -> ", result);
   });
   return section;
 }
