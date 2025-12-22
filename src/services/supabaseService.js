@@ -1,3 +1,5 @@
+import { Ok, Err } from "../utils/result";
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
@@ -41,14 +43,9 @@ export async function fetchSupabase({
     console.log("data -> ", data);
 
     if (!response.ok) {
-      /* data ->
-        code: 400
-        error_code: "invalid_credentials"
-        msg: "Invalid login credentials
-      */
-      return null;
+      return Err(data);
     }
-    return data;
+    return Ok(data);
   } catch (error) {
     console.error("Fetch error:", error);
   }
