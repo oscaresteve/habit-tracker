@@ -19,6 +19,8 @@ export const router = {
       setRoute(route);
     };
     window.addEventListener("hashchange", handleHashchange);
+    window.addEventListener("load", handleHashchange);
+    handleHashchange();
   },
   navigate(route) {
     location.hash = `${route}`;
