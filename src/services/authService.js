@@ -8,4 +8,10 @@ export async function login({ email, password }) {
   });
 }
 
-export function register() {}
+export async function signup({ email, password }) {
+  await fetchSupabase({
+    endpoint: "/auth/v1/signup",
+    method: "POST",
+    body: { email, password },
+  })
+}

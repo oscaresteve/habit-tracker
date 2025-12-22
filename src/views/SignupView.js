@@ -1,15 +1,17 @@
-export function RegisterView({ onNavigate }) {
+import { signup } from "../services/authService";
+
+export function SignupView({ onNavigate }) {
   const section = document.createElement("section");
 
   section.innerHTML = `
-      <h1>Register</h1>
-      <form id="login-form">
+      <h1>Sign Up</h1>
+      <form id="signup-form">
         <input id="email-input" type="email" name="email" placeholder="Email" />
 
         <input id="password-input" type="password" name="password" placeholder="Password"/>
         <input id="password-input-confirm" type="password" name="password" placeholder="Confirm Password"/>
 
-        <input type="submit" value="Log In" />
+        <input type="submit" value="Sign Up" />
       </form>
       <button id="login-btn">Go to Login</button>
   `;
@@ -18,7 +20,7 @@ export function RegisterView({ onNavigate }) {
   const formState = { emailValue: "", passwordValue: "", passwordConfirmValue: "" };
 
   const loginBtn = section.querySelector("#login-btn");
-  const registerForm = section.querySelector("#login-form");
+  const signupForm = section.querySelector("#signup-form");
   const emailInput = section.querySelector("#email-input");
   const passwordInput = section.querySelector("#password-input");
   const passwordInputConfirm = section.querySelector("#password-input-confirm");
@@ -38,11 +40,10 @@ export function RegisterView({ onNavigate }) {
     formState.passwordConfirmValue = e.target.value;
   });
 
-  registerForm.addEventListener("submit", async (e) => {
+  signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    try {
-      console.log(formState);
-    } catch (error) {}
+    console.log(formState);
+    await signup({ email: formState.emailValue, password: formState.passwordValue })
   });
   return section;
 }

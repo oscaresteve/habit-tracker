@@ -1,7 +1,7 @@
 import { router } from "./router/router";
 import { route$ } from "./state/store";
 import { LoginView } from "./views/LoginView";
-import { RegisterView } from "./views/RegisterView";
+import { SignupView } from "./views/SignupView";
 
 router.init();
 
@@ -17,8 +17,8 @@ route$.subscribe((route) => {
     case "login":
       view = LoginView({ onNavigate: router.navigate });
       break;
-    case "register":
-      view = RegisterView({ onNavigate: router.navigate });
+    case "signup":
+      view = SignupView({ onNavigate: router.navigate });
       break;
     default:
       view = document.createElement("h1");

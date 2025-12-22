@@ -12,18 +12,18 @@ export function LoginView({ onNavigate }) {
 
         <input type="submit" value="Log In" />
       </form>
-      <button id="register-btn">Go to Register</button>
+      <button id="signup-btn">Go to Sign Up</button>
   `;
 
   // Estado local del formulario
   const formState = { emailValue: "", passwordValue: "" };
 
-  const registerBtn = section.querySelector("#register-btn");
+  const signupBtn = section.querySelector("#signup-btn");
   const loginForm = section.querySelector("#login-form");
   const emailInput = section.querySelector("#email-input");
   const passwordInput = section.querySelector("#password-input");
 
-  registerBtn.addEventListener("click", () => onNavigate("register"));
+  signupBtn.addEventListener("click", () => onNavigate("signup"));
 
   // Actualizar estado local al cambiar inputs
   emailInput.addEventListener("input", (e) => {
