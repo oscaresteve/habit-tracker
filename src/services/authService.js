@@ -22,15 +22,36 @@ export async function login({ email, password }) {
     });
   }
 
+  //Si el login es exitoso se guarda la sesion, y se devuelven los datos
+
   const {
     access_token = null,
+    expires_at = null,
+    expires_in = null,
+    refresh_token = null,
     user: { id = null, email: userEmail = null } = {},
   } = result.data ?? {};
 
+  saveSession({
+    access_token,
+    expires_at,
+    expires_in,
+    refresh_token,
+    user: {
+      id,
+      email: userEmail,
+    },
+  });
+
   return Ok({
     access_token,
-    id,
-    email: userEmail,
+    expires_at,
+    expires_in,
+    refresh_token,
+    user: {
+      id,
+      email: userEmail,
+    },
   });
 }
 
@@ -61,4 +82,51 @@ export async function signup({ email, password }) {
     id,
     email: userEmail,
   });
+}
+
+export function saveSession(session) {
+  //Convertir de segundos a milisegundos
+  const expires_at = session.expires_at * 1000;
+
+  localStorage.setItem(
+    "user_session",
+    JSON.stringify({
+      ...session,
+      expires_at,
+    })
+  );
+}
+
+function getStoredSession() {
+  const raw = localStorage.getItem("user_session");
+  return raw ? JSON.parse(raw) : null;
+}
+
+export async function restoreSession() {
+  const session = getStoredSession();
+  if (!session) return null;
+
+  if (Date.now() > session.expires_at) {
+    return await refreshSession(session);
+  }
+
+  return session;
+}
+
+export async function refreshSession(session) {
+  const result = await fetchSupabase({
+    endpoint: "/auth/v1/token?grant_type=refresh_token",
+    method: "POST",
+    body: {
+      refresh_token: session.refresh_token,
+    },
+  });
+
+  if (isErr(result)) {
+    localStorage.removeItem("user_session");
+    return null;
+  }
+
+  saveSession(result.data);
+  return result.data;
 }
