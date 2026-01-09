@@ -1,10 +1,27 @@
 import { router } from "./router/router";
-import { route$ } from "./state/store";
+import { route$, setUser } from "./state/store";
 import { LoginView } from "./views/LoginView";
 import { SignupView } from "./views/SignupView";
 import { HomeView } from "./views/HomeView";
+import { restoreSession } from "./services/authService";
 
-router.init();
+//Se intenta restaurar la sesion, luego se inicia el router
+
+async function bootstrap() {
+  const session = await restoreSession();
+
+  if (session) {
+    setUser({
+      email: session.user.email,
+      id: session.user.id,
+      access_token: session.access_token,
+    });
+  }
+
+  router.init();
+}
+
+bootstrap();
 
 const root = document.querySelector("#app");
 

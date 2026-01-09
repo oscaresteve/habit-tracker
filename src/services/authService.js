@@ -43,6 +43,8 @@ export async function login({ email, password }) {
     },
   });
 
+  //El estado lo deben modificar las vistas
+
   return Ok({
     access_token,
     expires_at,
@@ -85,7 +87,9 @@ export async function signup({ email, password }) {
 }
 
 export function saveSession(session) {
-  //Convertir de segundos a milisegundos
+
+  //Convertir de segundos a milisegundos, formato entendible por JS
+  
   const expires_at = session.expires_at * 1000;
 
   localStorage.setItem(
@@ -95,18 +99,34 @@ export function saveSession(session) {
       expires_at,
     })
   );
+  console.log("Sesion saved -> ", {
+    ...session,
+    expires_at,
+  });
 }
+
+//Si hay session la devuelve parseada, y si no devuelve null
 
 function getStoredSession() {
   const raw = localStorage.getItem("user_session");
   return raw ? JSON.parse(raw) : null;
 }
 
+//Recoge la sesion de localStorage y comprueba que
+
 export async function restoreSession() {
   const session = getStoredSession();
+
+  console.log("Stored session -> ", session);
+  
   if (!session) return null;
 
+  //Si la sesion esta expirada se refresca la sesion
+
   if (Date.now() > session.expires_at) {
+
+    console.log("Sesion expirada, refrescando sesion");
+    
     return await refreshSession(session);
   }
 
@@ -127,6 +147,8 @@ export async function refreshSession(session) {
     return null;
   }
 
+  //Se guarda y se devuelve la sesion normalizada
+
   saveSession(result.data);
-  return result.data;
+  return getStoredSession();
 }
