@@ -1,4 +1,6 @@
 import { login } from "../services/authService";
+import { setUser } from "../state/store";
+import { isErr } from "../utils/result";
 
 export function LoginView({ onNavigate }) {
   const section = document.createElement("section");
@@ -43,7 +45,24 @@ export function LoginView({ onNavigate }) {
       email: formState.emailValue,
       password: formState.passwordValue,
     });
+
     console.log("Resultado de Login -> ", result);
+
+    if (isErr(result)) {
+      //Manejar los errores
+    }
+
+    //Se modifica el estado global
+
+    setUser({
+      access_token: result.data.access_token,
+      email: result.data.user.email,
+      id: result.data.user.id,
+    });
+
+    //Se navega a home
+
+    onNavigate("home");
   });
   return section;
 }

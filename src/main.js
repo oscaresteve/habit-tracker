@@ -2,6 +2,7 @@ import { router } from "./router/router";
 import { route$ } from "./state/store";
 import { LoginView } from "./views/LoginView";
 import { SignupView } from "./views/SignupView";
+import { HomeView } from "./views/HomeView";
 
 router.init();
 
@@ -19,6 +20,9 @@ route$.subscribe((route) => {
       break;
     case "signup":
       view = SignupView({ onNavigate: router.navigate });
+      break;
+    case "home":
+      view = HomeView({ onNavigate: router.navigate });
       break;
     default:
       view = document.createElement("h1");
