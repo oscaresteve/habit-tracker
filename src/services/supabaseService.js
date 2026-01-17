@@ -31,8 +31,6 @@ export async function fetchSupabase({
       body: body ? JSON.stringify(body) : undefined,
     });
 
-    console.log("response ->", response);
-
     //Para saber si se puede procesar la respuesta como json
     const contentType = response.headers.get("content-type");
 
@@ -40,14 +38,12 @@ export async function fetchSupabase({
       ? await response.json()
       : null;
 
-    console.log("data -> ", data);
-
     //Se devuelve una respuesta generica, esta funcion no debe saber sobre los datos
     if (!response.ok) {
       return Err(data);
     }
     return Ok(data);
   } catch (error) {
-    return Err(error)
+    return Err(error);
   }
 }

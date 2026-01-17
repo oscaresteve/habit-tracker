@@ -9,8 +9,6 @@ export async function login({ email, password }) {
     body: { email, password },
   });
 
-  console.log("result -> ", result);
-
   //Object destructuring con defaults, se extraen solo los datos necesarios y si no existen se devuelve null
 
   if (isErr(result)) {
@@ -69,8 +67,6 @@ export async function signup({ email, password }) {
     body: { email, password },
   });
 
-  console.log("result -> ", result);
-
   if (isErr(result)) {
     const { error_code = null, msg = null } = result.error ?? {};
 
@@ -103,10 +99,6 @@ export function saveSession(session) {
       expires_at,
     }),
   );
-  console.log("Sesion saved -> ", {
-    ...session,
-    expires_at,
-  });
 }
 
 //Si hay session la devuelve parseada, y si no devuelve null
@@ -121,15 +113,11 @@ function getStoredSession() {
 export async function restoreSession() {
   const session = getStoredSession();
 
-  console.log("Stored session -> ", session);
-
   if (!session) return null;
 
   //Si la sesion esta expirada se refresca la sesion
 
   if (Date.now() > session.expires_at) {
-    console.log("Sesion expirada, refrescando sesion");
-
     return await refreshSession(session);
   }
 

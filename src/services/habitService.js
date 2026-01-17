@@ -1,5 +1,4 @@
 import { fetchSupabase } from "./supabaseService";
-import { Err, isErr, Ok } from "../utils/result";
 
 export async function createHabit({ token, habit }) {
   const result = await fetchSupabase({
@@ -10,16 +9,7 @@ export async function createHabit({ token, habit }) {
     body: habit,
   });
 
-  if (isErr(result)) {
-    const { error_code = null, msg = null } = result.error ?? {};
-
-    return Err({
-      error_code,
-      msg,
-    });
-  }
-
-  return Ok(result);
+  return result;
 }
 
 export async function readHabit() {}

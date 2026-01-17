@@ -8,8 +8,6 @@ export const router = {
     const handleHashchange = () => {
       let route = location.hash.replace("#", "") || "login";
 
-      console.log("Hash changed:", route);
-
       const user = getState().user;
 
       //Usuario no autenticado, redirige login

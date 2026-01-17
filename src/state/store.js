@@ -43,8 +43,6 @@ export function setState(partial) {
   };
 
   state$.next(nextState);
-
-  console.log("Estado actualizado -> ", nextState);
 }
 
 export function setUser(user) {

@@ -39,21 +39,19 @@ export function LoginView({ onNavigate }) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    console.log("formState -> ", formState);
-
     const result = await login({
       email: formState.emailValue,
       password: formState.passwordValue,
     });
 
-    console.log("Resultado de Login -> ", result);
-
     if (isErr(result)) {
       //Manejar los errores
+      console.log(result);
+
+      return;
     }
 
     //Se modifica el estado global
-
     setUser({
       access_token: result.data.access_token,
       email: result.data.user.email,
@@ -61,8 +59,9 @@ export function LoginView({ onNavigate }) {
     });
 
     //Se navega a home
-
     onNavigate("home");
+
+    console.log(result);
   });
   return section;
 }

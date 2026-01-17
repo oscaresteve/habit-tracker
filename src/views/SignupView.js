@@ -1,4 +1,5 @@
 import { signup } from "../services/authService";
+import { isErr } from "../utils/result";
 
 export function SignupView({ onNavigate }) {
   const section = document.createElement("section");
@@ -47,14 +48,19 @@ export function SignupView({ onNavigate }) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    console.log("formState -> ", formState);
-
     const result = await signup({
       email: formState.emailValue,
       password: formState.passwordValue,
     });
 
-    console.log("Resultado de Register -> ", result);
+    if (isErr(result)) {
+      //Manejar los errores
+      console.log(result);
+
+      return;
+    }
+
+    console.log(result);
   });
   return section;
 }

@@ -25,25 +25,39 @@ export function HomeView({ onNavigate }) {
     const result = await logout();
 
     if (isErr(result)) {
+      //Manejar los errores
+
+      console.log(result);
     }
 
+    //Se limpia el usuario del estado
     setUser(null);
 
+    //Se navega a login
     onNavigate("login");
+
+    console.log(result);
   });
 
-  createHabitBtn.addEventListener(
-    "click",
-    async () =>
-      await createHabit({
-        token: getAccessToken(),
-        habit: {
-          name: "Test",
-          description: "Habit Test",
-          frecuency: "daily",
-        },
-      }),
-  );
+  createHabitBtn.addEventListener("click", async () => {
+    const result = await createHabit({
+      token: getAccessToken(),
+      habit: {
+        name: "Test",
+        description: "Habit Test",
+        frecuency: "daily",
+      },
+    });
+
+    if (isErr(result)) {
+      //Manejar los errores
+      console.log(result);
+
+      return;
+    }
+
+    console.log(result);
+  });
 
   return section;
 }
