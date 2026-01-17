@@ -1,6 +1,7 @@
-import { getState, setUser } from "../state/store";
+import { getAccessToken, getState, setUser } from "../state/store";
 import { isErr } from "../utils/result";
 import { logout } from "../services/authService";
+import { createHabit } from "../services/habitService";
 
 export function HomeView({ onNavigate }) {
   const section = document.createElement("section");
@@ -9,10 +10,14 @@ export function HomeView({ onNavigate }) {
       <h1>Home</h1>
       <h3>Active user: <span id="active-user"></span></h3>
       <button id="logout-btn">Log Out</button>
+
+      <h1>CRUD Habitos</h1>
+      <button id="create-habit-btn">Create Habit</button>
   `;
 
   const activeUser = section.querySelector("#active-user");
   const logoutBtn = section.querySelector("#logout-btn");
+  const createHabitBtn = section.querySelector("#create-habit-btn");
 
   activeUser.textContent = getState().user.email;
 
@@ -26,6 +31,19 @@ export function HomeView({ onNavigate }) {
 
     onNavigate("login");
   });
+
+  createHabitBtn.addEventListener(
+    "click",
+    async () =>
+      await createHabit({
+        token: getAccessToken(),
+        habit: {
+          name: "Test",
+          description: "Habit Test",
+          frecuency: "daily",
+        },
+      }),
+  );
 
   return section;
 }
