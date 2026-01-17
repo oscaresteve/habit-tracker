@@ -57,6 +57,11 @@ export async function login({ email, password }) {
   });
 }
 
+export async function logout() {
+  localStorage.removeItem("user_session");
+  return Ok(null);
+}
+
 export async function signup({ email, password }) {
   const result = await fetchSupabase({
     endpoint: "/auth/v1/signup",
@@ -87,9 +92,8 @@ export async function signup({ email, password }) {
 }
 
 export function saveSession(session) {
-
   //Convertir de segundos a milisegundos, formato entendible por JS
-  
+
   const expires_at = session.expires_at * 1000;
 
   localStorage.setItem(
@@ -97,7 +101,7 @@ export function saveSession(session) {
     JSON.stringify({
       ...session,
       expires_at,
-    })
+    }),
   );
   console.log("Sesion saved -> ", {
     ...session,
@@ -118,15 +122,14 @@ export async function restoreSession() {
   const session = getStoredSession();
 
   console.log("Stored session -> ", session);
-  
+
   if (!session) return null;
 
   //Si la sesion esta expirada se refresca la sesion
 
   if (Date.now() > session.expires_at) {
-
     console.log("Sesion expirada, refrescando sesion");
-    
+
     return await refreshSession(session);
   }
 
