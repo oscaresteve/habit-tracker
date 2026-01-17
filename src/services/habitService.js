@@ -1,5 +1,8 @@
 import { fetchSupabase } from "./supabaseService";
 
+//Cada usuario solo podra hacer modificaciones en sus habitos de tal forma que al hacer un select all, solo recibira los suyos
+//Tambien para los updates y deletes
+
 export async function createHabit({ token, habit }) {
   const result = await fetchSupabase({
     endpoint: "/rest/v1/habits",
@@ -12,7 +15,14 @@ export async function createHabit({ token, habit }) {
   return result;
 }
 
-export async function readHabit() {}
+export async function readHabit({ token }) {
+  const result = await fetchSupabase({
+    endpoint: `/rest/v1/habits?select=*`,
+    token,
+  });
+
+  return result;
+}
 
 export async function updateHabit() {}
 

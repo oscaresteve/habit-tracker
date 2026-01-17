@@ -6,7 +6,7 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export async function fetchSupabase({
   endpoint = "",
   method = "GET",
-  body = {},
+  body,
   headers = {},
   token,
 }) {
@@ -20,6 +20,12 @@ export async function fetchSupabase({
   //Como hay rls siempre que haga falta Bearer se usara el token, si no no
   const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
 
+  //Comprobar que hay body y que no esta vacio
+  const hasBody =
+    body !== undefined &&
+    body !== null &&
+    (typeof body !== "object" || Object.keys(body).length > 0);
+
   try {
     const response = await fetch(url, {
       method,
@@ -28,7 +34,7 @@ export async function fetchSupabase({
         ...authHeader,
         ...headers,
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: hasBody ? JSON.stringify(body) : undefined,
     });
 
     //Para saber si se puede procesar la respuesta como json
