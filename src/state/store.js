@@ -18,11 +18,15 @@ export const state$ = new BehaviorSubject(store);
 //Observable que emite cambios de ruta
 export const route$ = state$.pipe(
   map((state) => state.ui.route),
-  distinctUntilChanged()
+  distinctUntilChanged(),
 );
 
 export function getState() {
   return state$.getValue();
+}
+
+export function getAccessToken() {
+  return state$.getValue().user.access_token || null;
 }
 
 //Actualiza el estado de forma no profunda, se sigue la estructura definida
@@ -41,7 +45,6 @@ export function setState(partial) {
   state$.next(nextState);
 
   console.log("Estado actualizado -> ", nextState);
-  
 }
 
 export function setUser(user) {
