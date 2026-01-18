@@ -1,4 +1,4 @@
-import { login } from "../services/authService";
+import { login } from "../actions/authActions";
 import { setUser } from "../state/store";
 import { isErr } from "../utils/result";
 

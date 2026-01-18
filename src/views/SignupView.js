@@ -1,4 +1,4 @@
-import { signup } from "../services/authService";
+import { signup } from "../actions/authActions";
 import { isErr } from "../utils/result";
 
 export function SignupView({ onNavigate }) {

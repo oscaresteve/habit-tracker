@@ -1,6 +1,6 @@
 import { getAccessToken, getState, setUser } from "../state/store";
 import { isErr } from "../utils/result";
-import { logout } from "../services/authService";
+import { logout } from "../actions/authActions";
 import {
   createHabit,
   deleteHabit,

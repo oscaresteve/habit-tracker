@@ -3,18 +3,19 @@ import { route$, setUser } from "./state/store";
 import { LoginView } from "./views/LoginView";
 import { SignupView } from "./views/SignupView";
 import { HomeView } from "./views/HomeView";
-import { restoreSession } from "./services/authService";
+import { restoreSession } from "./actions/authActions";
+import { isOk } from "./utils/result";
 
 //Se intenta restaurar la sesion, luego se inicia el router
 
 async function bootstrap() {
   const session = await restoreSession();
 
-  if (session) {
+  if (isOk(session)) {
     setUser({
-      email: session.user.email,
-      id: session.user.id,
-      access_token: session.access_token,
+      email: session.data.user.email,
+      id: session.data.user.id,
+      access_token: session.data.access_token,
     });
   }
 
