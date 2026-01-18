@@ -34,7 +34,7 @@ export function HomeView({ onNavigate }) {
   activeUser.textContent = getState().user.email;
 
   logoutBtn.addEventListener("click", async () => {
-    const result = await logout();
+    const result = logout();
 
     if (isErr(result)) {
       //Manejar los errores

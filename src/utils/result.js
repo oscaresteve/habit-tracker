@@ -1,12 +1,13 @@
-export const Ok = (data) => ({
+export const Ok = ({ data = null, msg = null } = {}) => ({
   ok: true,
-  data
-})
+  data,
+  msg,
+});
 
-export const Err = (error) => ({
+export const Err = ({ msg = "Error desconocido", code = null } = {}) => ({
   ok: false,
-  error
-})
+  error: { msg, code },
+});
 
-export const isOk = (result) => result.ok
-export const isErr = (result) => !result.ok
+export const isOk = (result) => result.ok;
+export const isErr = (result) => !result.ok;

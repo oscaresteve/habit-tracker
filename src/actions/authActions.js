@@ -8,18 +8,15 @@ import { Ok, Err, isErr } from "../utils/result";
 export async function login({ email, password }) {
   const result = await loginRequest({ email, password });
 
-  //Object destructuring con defaults, se extraen solo los datos necesarios y si no existen se devuelve null
-
   if (isErr(result)) {
-    const { error_code = null, msg = null } = result.error ?? {};
-
-    return Err({
-      error_code,
-      msg,
-    });
+    // Traduce el error a un mensaje entendible
+    const msg = "Error al iniciar sesión. Por favor, inténtalo de nuevo.";
+    const code = "AUTH_LOGIN_FAILED";
+    return Err({ code, msg });
   }
 
   //Si el login es exitoso se guarda la sesion, y se devuelven los datos
+  //Object destructuring con defaults, se extraen solo los datos necesarios y si no existen se devuelve null
 
   const {
     access_token = null,
@@ -43,25 +40,23 @@ export async function login({ email, password }) {
   saveSession(session);
 
   //El estado lo deben modificar las vistas
+  //Se devuelve un resultado entendible
 
-  return Ok(session);
+  return Ok({ data: session, msg: "Sesión iniciada correctamente" });
 }
 
 export function logout() {
   localStorage.removeItem("user_session");
-  return Ok(null);
+  return Ok({ msg: "Sesión cerrada correctamente" });
 }
 
 export async function signup({ email, password }) {
   const result = await signupRequest({ email, password });
 
   if (isErr(result)) {
-    const { error_code = null, msg = null } = result.error ?? {};
-
-    return Err({
-      error_code,
-      msg,
-    });
+    const msg = "Error al registrarse. Por favor, inténtalo de nuevo.";
+    const code = "AUTH_SIGNUP_FAILED";
+    return Err({ code, msg });
   }
 
   //Signup no maneja si el usuario ha confirmado el email o no
@@ -70,8 +65,11 @@ export async function signup({ email, password }) {
   const { id = null, email: userEmail = null } = result.data ?? {};
 
   return Ok({
-    id,
-    email: userEmail,
+    data: {
+      id,
+      email: userEmail,
+    },
+    msg: "Usuario registrado correctamente",
   });
 }
 
@@ -80,7 +78,11 @@ export async function signup({ email, password }) {
 export async function restoreSession() {
   const session = getStoredSession();
 
-  if (!session) return Err(null);
+  if (!session) {
+    const msg = "Error al restaurar la sesión";
+    const code = "RESTORE_SESSION_FAILED";
+    return Err({ msg, code });
+  }
 
   //Si la sesion esta expirada se refresca la sesion
 
@@ -88,7 +90,7 @@ export async function restoreSession() {
     return await refreshSession({ session });
   }
 
-  return Ok(session);
+  return Ok({ data: session, msg: "Sesión restaurada correctamente" });
 }
 
 export async function refreshSession({ session }) {
@@ -98,12 +100,15 @@ export async function refreshSession({ session }) {
 
   if (isErr(result)) {
     localStorage.removeItem("user_session");
-    return null;
+    const msg = "Error al refrescar el access token";
+    const code = "REFRESH_TOKEN_FAILED";
+    return Err({ msg, code });
   }
 
   //Se guarda y se devuelve la sesion normalizada
 
   saveSession(result.data);
+
   return getStoredSession();
 }
 

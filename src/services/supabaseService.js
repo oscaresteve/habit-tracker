@@ -46,10 +46,16 @@ export async function fetchSupabase({
 
     //Se devuelve una respuesta generica, esta funcion no debe saber sobre los datos
     if (!response.ok) {
-      return Err(data);
+      const msg = data?.message ?? data?.msg ?? "Error en la petición";
+      const code = data?.code ?? null;
+
+      return Err({ msg, code });
     }
-    return Ok(data);
+
+    return Ok({ data });
   } catch (error) {
-    return Err(error);
+    const msg = error.message ?? "Error de red";
+    const code = error.error_code ?? null;
+    return Err({ msg, code });
   }
 }
