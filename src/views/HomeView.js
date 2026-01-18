@@ -1,7 +1,12 @@
 import { getAccessToken, getState, setUser } from "../state/store";
 import { isErr } from "../utils/result";
 import { logout } from "../services/authService";
-import { createHabit, readHabit, updateHabit } from "../services/habitService";
+import {
+  createHabit,
+  deleteHabit,
+  readHabit,
+  updateHabit,
+} from "../services/habitService";
 
 export function HomeView({ onNavigate }) {
   const section = document.createElement("section");
@@ -15,6 +20,7 @@ export function HomeView({ onNavigate }) {
       <button id="create-habit-btn">Create Habit</button>
       <button id="read-habit-btn">Read Habit</button>
       <button id="update-habit-btn">Update Habit</button>
+      <button id="delete-habit-btn">Delete Habit</button>
 
   `;
 
@@ -23,6 +29,7 @@ export function HomeView({ onNavigate }) {
   const createHabitBtn = section.querySelector("#create-habit-btn");
   const readHabitBtn = section.querySelector("#read-habit-btn");
   const updateHabitBtn = section.querySelector("#update-habit-btn");
+  const deleteHabitBtn = section.querySelector("#delete-habit-btn");
 
   activeUser.textContent = getState().user.email;
 
@@ -88,6 +95,22 @@ export function HomeView({ onNavigate }) {
         description: "Habit Test updatedd",
         frecuency: "monthly",
       },
+    });
+
+    if (isErr(result)) {
+      //Manejar los errores
+      console.log(result);
+
+      return;
+    }
+
+    console.log(result);
+  });
+
+  deleteHabitBtn.addEventListener("click", async () => {
+    const result = await deleteHabit({
+      token: getAccessToken(),
+      habitId: "55bac456-ccef-489e-8e64-0186d9f4c1db",
     });
 
     if (isErr(result)) {

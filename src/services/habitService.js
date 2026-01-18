@@ -41,4 +41,15 @@ export async function updateHabit({ token, habitId, habit }) {
   return result;
 }
 
-export async function deleteHabit() {}
+//Elimina un habito del usuario autenticado cuyo id es igual al proporcionado.
+//Si no se encuentra el habito devuelve un array vacio, de lo contrario devuelve una representacion de los cambios.
+export async function deleteHabit({ token, habitId }) {
+  const result = await fetchSupabase({
+    endpoint: `/rest/v1/habits?id=eq.${habitId}`,
+    method: "DELETE",
+    headers: { Prefer: "return=representation" },
+    token,
+  });
+
+  return result;
+}
